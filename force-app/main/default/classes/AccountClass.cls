@@ -3,16 +3,16 @@ public with sharing class AccountClass {
     @AuraEnabled(cacheable=true)
     public static List<Account> getAccounts(String searchTextClass){
         try {
-
-            if(!String.isEmpty(searchTextClass)){
-                String searchText = '%' + searchTextClass + '%';
-                return [ select Id, Name from Account where Name like :searchText];
-
+            if(String.isEmpty(searchTextClass))
+            {
+            return [SELECT Id, Name FROM Account];
+            }
+            else 
+            {
+                searchTextClass='%'+searchTextClass+'%';
+                return [SELECT Id, Name FROM Account WHERE Name Like :searchTextClass];
             }
             
-            return [ select Id, Name from Account];
-
-
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
