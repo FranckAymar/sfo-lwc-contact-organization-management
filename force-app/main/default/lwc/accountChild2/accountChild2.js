@@ -41,7 +41,7 @@ export default class AccountChild2 extends LightningElement {
             this.currentId = event.detail.row.Id;
             this.currentName = event.detail.row.Name;
 
-            const payload = {accoundId: this.currentId, accountName: this.currentName};
+            const payload = {accountId: this.currentId, accountName: this.currentName};
 
             publish(this.messageContext, Comrevo, payload)
         } 

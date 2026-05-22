@@ -1,10 +1,15 @@
 import { MessageContext, subscribe, unsubscribe } from 'lightning/messageService';
 import { LightningElement, wire } from 'lwc';
 import Comrevo from '@salesforce/messageChannel/Comrevo__c';
+import getAccountContacts from '@salesforce/apex/AccountClass.getAccountContacts'; 
+
 
 export default class ShowAccountContact extends LightningElement {
 
-  subscription=null;
+    subscription=null;
+    title='Contacts';
+    contacts;
+    hasContacts;
 
     @wire (MessageContext) messageContext;
     accountId;
@@ -29,10 +34,18 @@ export default class ShowAccountContact extends LightningElement {
                 {
                     this.accountId=parameter.accountId;
                     this.accountName=parameter.accountName;
+                    this.title=this.accountName+"'s Contacts";
+                    this.getContacts();
                 }
                 );
         }
 
+    }
+
+    async getContacts()
+    {
+        this.contacts=await getAccountContacts({accountId: this.accountId});
+        this.hasContacts=this.contacts.length>0?true:false;
     }
 
     handleUnsubscribe()
