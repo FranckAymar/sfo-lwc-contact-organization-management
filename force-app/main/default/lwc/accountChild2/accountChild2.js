@@ -1,5 +1,8 @@
 import { LightningElement, api, wire } from 'lwc';
 import getAccounts from '@salesforce/apex/AccountClass.getAccounts'; 
+import { MessageContext, publish } from 'lightning/messageService';
+import Comrevo from '@salesforce/messageChannel/Comrevo__c';
+
 
 export default class AccountChild2 extends LightningElement {
 
@@ -28,6 +31,8 @@ export default class AccountChild2 extends LightningElement {
     currentId;
     currentName;
 
+    @wire(MessageContext) messageContext;
+
 
     handleRowAction(event){
 
@@ -35,7 +40,11 @@ export default class AccountChild2 extends LightningElement {
 
             this.currentId = event.detail.row.Id;
             this.currentName = event.detail.row.Name;
-        }
+
+            const payload = {accoundId: this.currentId, accountName: this.currentName};
+
+            publish(this.messageContext, Comrevo, payload)
+        } 
     }
 
     @wire(getAccounts, { searchTextClass: '$searchTextChild2'}) accountRecords; 

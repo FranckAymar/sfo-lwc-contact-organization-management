@@ -3,6 +3,7 @@
     {currentId}
     {currentName}
 
+ <div style="height: 300px;">
     <lightning-datatable 
     key-field="" 
     data={accountRecords.data} 
@@ -11,6 +12,9 @@
     show-row-number-column="true"
     onrowaction={handleRowAction}
     >
+ 
 
     </lightning-datatable>
+
+    </div>
 </template>
